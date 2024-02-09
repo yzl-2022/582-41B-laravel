@@ -27,7 +27,7 @@
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                 aria-expanded="false">Tasks</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">New Task</a></li>
+                                <li><a class="dropdown-item" href="{{ route('task.create') }}">New Task</a></li>
                                 <li><a class="dropdown-item" href="#">Completed</a></li>
                                 <li><a class="dropdown-item" href="#">Unfinished</a></li>
                             </ul>
@@ -50,7 +50,12 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container my-5">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         @yield('content')
     </div>
     <footer class="footer mt-auto py-3 bg-dark text-white">
