@@ -13,14 +13,16 @@
                     <ul class="list-unstyled">
                         <li><strong>Completed:</strong> {{ $task->completed ? 'Yes' : 'No' }}</li>
                         <li><strong>Due Date:</strong> {{ $task->due_date }}</li>
-                        <li><strong>Author:</strong> {{ $task->author }}</li>
+                        <li><strong>Author:</strong> {{ $task->user->name }}</li>
                     </ul>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
+                    @auth
                     <a href="{{ route('task.edit', $task->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                         Delete
                     </button>
+                    @endauth
                 </div>
             </div>
         </div>

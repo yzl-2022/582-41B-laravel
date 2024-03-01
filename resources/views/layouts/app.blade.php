@@ -7,11 +7,11 @@
     <!--ajouter CSS du Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
-<body>
+<body class="d-flex flex-column h-100">
     <header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
+                <a class="navbar-brand" href="{{ asset('/') }}">{{ config('app.name') }}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -20,30 +20,42 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ route('task.index') }}">Tasks</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">User</a>
-                        </li>
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                aria-expanded="false">Tasks</a>
+                                aria-expanded="false">Users</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('task.create') }}">New Task</a></li>
-                                <li><a class="dropdown-item" href="#">Completed</a></li>
-                                <li><a class="dropdown-item" href="#">Unfinished</a></li>
+                                @auth
+                                <li><a class="dropdown-item" href="{{route('user.index')}}">Users</a></li>
+                                @endauth
+                                <li><a class="dropdown-item" href="{{route('user.create')}}">New User</a></li>
                             </ul>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav  mb-2 mb-sm-0">
+                        @auth
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                aria-expanded="false">Language</a>
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Tasks</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{route('task.create')}}">New Task</a></li>
+                                <li><a class="dropdown-item" href="{{route('task.completed', 1)}}">Completed</a></li>
+                                <li><a class="dropdown-item" href="{{route('task.completed', 0)}}">Unfinished</a></li>
+                            </ul>
+                        </li>
+                        @endauth
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-sm-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">English</a></li>
                                 <li><a class="dropdown-item" href="#">French</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Logout</a>
+                            @guest
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            @else
+                                <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+                            @endguest
                         </li>
                     </ul>
                 </div>
@@ -51,6 +63,12 @@
         </nav>
     </header>
     <div class="container my-5">
+        @auth 
+            Welcome {{ Auth::user()->name }}!
+        @else
+            Please log in to continue!
+        @endauth
+
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
