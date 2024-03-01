@@ -28,6 +28,8 @@ Route::delete('/task/{task}', [App\Http\Controllers\TaskController::class, 'dest
 
 Route::get('/completed/task/{completed}', [App\Http\Controllers\TaskController::class, 'completed'])->name('task.completed');
 
+Route::get('/query', [App\Http\Controllers\TaskController::class, 'query']);
+
 
 /** routes pour utilisateurs */
 // Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
