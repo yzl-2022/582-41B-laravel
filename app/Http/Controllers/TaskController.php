@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Category;
+
 use Dompdf\Dompdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
