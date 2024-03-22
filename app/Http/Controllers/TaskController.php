@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use Dompdf\Dompdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 class TaskController extends Controller
 {
     /**
@@ -28,7 +31,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('task.create');
+        $categories = Category::categories();
+        return view('task.create', compact('categories'));
     }
 
     /**
@@ -43,15 +47,19 @@ class TaskController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'completed'   => 'nullable|boolean',
-            'due_date'    => 'nullable|date'
-        ]);
+            'due_date'    => 'nullable|date',
+            'category_id' => 'required|exists:categories,id'
+        ],
+        [],
+        ['category_id' => 'Category']); //si une erreur se produit sur le champ 'category_id', le message d'erreur doit le référencer comme 'Category'.
 
         $task = Task::create([
             'title'       => $request->title,
             'description' => $request->description,
             'completed'   => $request->input('completed', false),
             'due_date'    => $request->due_date,
-            'user_id'     => Auth::user()->id
+            'user_id'     => Auth::user()->id,
+            'category_id' => $request->category_id
         ]);
 
         return redirect()->route('task.show', $task->id)->with('success', 'Task created successfully.');
@@ -270,5 +278,22 @@ class TaskController extends Controller
 
 
 
+    }
+
+    // public function pdf(Task $task){
+    //     $pdf = new Dompdf();
+    //     $pdf->setPaper('letter', 'portrait');
+    //     $pdf->loadHtml(view('task.show-pdf', ["task" => $task]));
+    //     $pdf->render();
+    //     return $pdf->stream('task.pdf');
+    // }
+
+    public function pdf(Task $task){
+        $qrCode = QrCode::size(200)->generate(route('task.show', $task->id));
+        $pdf = new Dompdf();
+        $pdf->setPaper('letter', 'portrait');
+        $pdf->loadHtml(view('task.show-pdf', ["task" => $task, "qrCode"=> $qrCode]));
+        $pdf->render();
+        return $pdf->stream('task.pdf');
     }
 }

@@ -51,3 +51,10 @@ Route::get('/logout', [App\Http\Controllers\AuthController::class, 'destroy'])->
 
 /** routes pour langue */
 Route::get('/lang/{locale}', [App\Http\Controllers\SetLocaleController::class, 'index'])->name('lang');
+
+/** routes pour catégories */
+Route::get('/create/category', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+Route::post('/create/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+
+/** pdf */
+Route::get('/task-pdf/{task}', [TaskController::class, 'pdf'])->name('task.pdf');
