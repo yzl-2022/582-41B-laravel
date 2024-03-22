@@ -45,7 +45,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         
         if(!Auth::validate($credentials)):
-            return redirect('login')
+            return redirect(route('login'))
                         ->withErrors(trans('auth.failed'))
                         ->withInput();
         endif;

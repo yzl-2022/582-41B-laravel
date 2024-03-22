@@ -48,3 +48,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/login', [App\Http\Controllers\AuthController::class, 'create'])->name('login');
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'store'])->name('login.store');
 Route::get('/logout', [App\Http\Controllers\AuthController::class, 'destroy'])->name('logout');
+
+/** routes pour langue */
+Route::get('/lang/{locale}', [App\Http\Controllers\SetLocaleController::class, 'index'])->name('lang');
