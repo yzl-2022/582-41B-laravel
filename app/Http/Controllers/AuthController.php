@@ -51,6 +51,12 @@ class AuthController extends Controller
         endif;
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
         Auth::login($user);
+        Auth::user()->roles()->detach();
+        if ($user->role_id === 1) {
+            $user->assignRole('admin');
+        } elseif ($user->role_id === 2) {
+            $user->assignRole('employee');
+        }
         return redirect()->intended(route('task.index'))->withSuccess('Signed in');
     }
 

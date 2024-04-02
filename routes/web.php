@@ -33,7 +33,8 @@ Route::get('/query', [App\Http\Controllers\TaskController::class, 'query']);
 
 /** routes pour utilisateurs */
 // Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
-Route::get('/registration', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
+Route::get('/registration', [App\Http\Controllers\UserController::class, 'create'])->name('user.create')->middleware('can:create-users');
+//
 Route::post('/registration', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
 // Route::get('/edit/user/{user}', [App\Http\Controllers\UserController::class, 'edit'])->name('user.edit');
 Route::middleware('auth')->group(function () {
