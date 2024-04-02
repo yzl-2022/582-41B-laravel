@@ -57,4 +57,10 @@ Route::get('/create/category', [App\Http\Controllers\CategoryController::class, 
 Route::post('/create/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
 
 /** pdf */
-Route::get('/task-pdf/{task}', [TaskController::class, 'pdf'])->name('task.pdf');
+Route::get('/task-pdf/{task}', [App\Http\Controllers\TaskController::class, 'pdf'])->name('task.pdf');
+
+/** routes pour mot de passe oublié */
+Route::get('/password/forgot', [App\Http\Controllers\UserController::class, 'forgot'])->name('user.forgot');
+Route::post('/password/forgot', [App\Http\Controllers\UserController::class, 'email'])->name('user.email');
+Route::get('/password/reset/{user}/{token}', [App\Http\Controllers\UserController::class, 'reset'])->name('user.reset');
+Route::put('/password/reset/{user}/{token}', [App\Http\Controllers\UserController::class, 'resetUpdate'])->name('user.reset.update');

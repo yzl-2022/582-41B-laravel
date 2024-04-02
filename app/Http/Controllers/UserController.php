@@ -99,4 +99,14 @@ class UserController extends Controller
     {
         //
     }
+
+    public function forgot(){
+        return view('user.forgot');
+    }
+
+    public function userPrivilege(Request $request){
+        $privilege = $request->privilege || '';
+        session()->put('user_privilege', $privilege);
+        return view('home');
+    }
 }

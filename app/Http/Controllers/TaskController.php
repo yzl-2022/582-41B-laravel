@@ -67,6 +67,34 @@ class TaskController extends Controller
         return redirect()->route('task.show', $task->id)->with('success', 'Task created successfully.');
     }
 
+    //////////////////////////////////////////////////
+    public function storeClient(Request $request)
+    {
+        // Complétez le code
+        $request->validate([
+            'name'     => 'required|string|min:2|max:25',
+            'address'  => 'required|string|max:100',
+            'city_id'  => 'required|numeric|exists:App\Models\Ville,id',
+            'email'    => 'required|email',
+            'phone'    => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
+            'birthday' => 'required|date:d-m-Y',
+        ]);
+
+        $client = Client::create([
+            'name'     => $request->name,
+            'address'  => $request->address,
+            'city_id'  => $request->city_id,
+            'email'    => $request->email,
+            'phone'    => $request->phone,
+            'birthday' => $request->birthday,
+        ]);
+
+        return redirect()->route('client', $client->id)->with('success', 'Client créé avec succès.');
+    }
+
+
+    /////////////////////////////////////////////////
+
     /**
      * Display the specified resource.
      *
